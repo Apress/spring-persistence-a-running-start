@@ -1,0 +1,24 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+<!--
+  - Application context definition for Petclinic on Hibernate.
+	-->
+
+   
+
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/> 
+
+    <bean id="users" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="username,password,firstname,lastname,ADMIN"/>
+    </bean>
+
+</beans>

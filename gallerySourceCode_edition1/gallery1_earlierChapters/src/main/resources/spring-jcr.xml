@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+        <bean id="passwordBean" class="java.lang.String">
+      <constructor-arg index="0" value="1234"/>
+    </bean>
+
+    <bean id="jcrSessionFactory" class="org.springmodules.jcr.jackrabbit.JackrabbitSessionFactory">
+      <property name="repository" ref="jackrabbitRepository"/>
+        <property name="nodeDefinitions">
+            <list>
+             <value>classpath:artEntity.cnd</value>
+            </list>
+          </property>
+
+         <property name="namespaces">
+             <props>
+                 <prop key="gallery">http://dialmercury.com/gallery</prop>
+             </props>
+         </property>
+
+      <property name="credentials">
+       <bean class="javax.jcr.SimpleCredentials">
+        <constructor-arg index="0" value="pfisher"/>
+        <!-- create the credentials using a bean factory -->
+        <constructor-arg index="1">
+             <bean factory-bean="passwordBean"
+                  factory-method="toCharArray"/>
+            </constructor-arg>
+       </bean>
+      </property>
+    </bean>
+
+<bean id="jackrabbitRepository" class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
+<property name="configuration" value="classpath:repository.xml"/>
+  <property name="homeDir" ref="/repo"/>
+</bean>
+
+
+<bean id="jcrTransactionManager"
+ class="org.springmodules.jcr.jackrabbit.LocalTransactionManager">
+   <property name="sessionFactory" ref="jcrSessionFactory"/>
+</bean>
+     
+
+
+    <tx:annotation-driven transaction-manager="jcrTransactionManager"/>
+
+    <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+
+
+	<!-- Read in daos from the hibernate package -->
+	<context:component-scan base-package="com.smartpants.artwork.dao.jcr">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+

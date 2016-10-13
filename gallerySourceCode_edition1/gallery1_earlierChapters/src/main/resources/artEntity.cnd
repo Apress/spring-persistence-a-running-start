@@ -1,0 +1,22 @@
+<gallery = 'http://dialmercury.com/gallery'>
+[gallery:artentity] > nt:unstrcutured
+  orderable
+  - gallery:title (string)
+    primary mandatory
+    version
+  - gallery:subtitle (string) version
+  - gallery:uploadedDate (date) mandatory
+  - gallery:displayDate (string)
+  - gallery:width (long)
+  - gallery:height (long)
+  - gallery:media (string)
+  - gallery:description (string)
+  - gallery:caption (string)
+  - gallery:generalViewable (boolean)
+  - gallery:privilegeViewable (boolean)
+  - gallery:categories (string) multiple
+  + gallery:thumbnail (nt:resource)
+  + gallery:image (nt:resource)
+  + gallery:archive (nt:resource)
+  + comment (gallery:comment) multiple
+

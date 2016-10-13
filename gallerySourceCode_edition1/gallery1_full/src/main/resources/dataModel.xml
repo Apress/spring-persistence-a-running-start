@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <!-- ========================= GENERAL DEFINITIONS ========================= -->
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+	<!-- Local DataSource that works in any environment -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
+		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" 
+		p:username="${jdbc.username}" p:password="${jdbc.password}"/>
+
+	<!-- JNDI DataSource for J2EE environments -->
+	<!--
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName"><value>java:comp/env/jdbc/petclinic</value></property>
+	</bean>
+	-->
+
+	<import resource="spring-jpa.xml"/>
+
+    <context:component-scan base-package="com.smartpants.artwork.service">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+
+</beans>
